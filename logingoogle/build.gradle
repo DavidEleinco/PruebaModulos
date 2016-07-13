@@ -3,11 +3,14 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        logingoogle_debug {
-            keyAlias 'lg_dbg'
-            keyPassword 'android'
-            storeFile file('/home/david/.android/debug.jks')
-            storePassword 'android'
+        logingoogle_eleinco {
+            keyAlias 'logingoogle'
+            keyPassword 'eleinco123'
+            storeFile file('/home/desarrollo/.android/desarrolloaplicacionesEleinco.jks')
+            storePassword 'eleinco123'
+        }
+        logingoogle_casa {
+            keyAlias 'logingoogle_casa'
         }
     }
     compileSdkVersion 24
@@ -23,9 +26,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.logingoogle_eleinco
         }
         debug {
-            signingConfig signingConfigs.logingoogle_debug
+            signingConfig signingConfigs.logingoogle_eleinco
         }
     }
 }
@@ -34,8 +38,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.0.0'
-    //compile 'com.google.android.gms:play-services-auth:9.0.1'
+    compile 'com.google.android.gms:play-services-auth:9.0.1'
 }
 
-
-//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services' // Esta linea debe ir despues de establecer las dependecias
