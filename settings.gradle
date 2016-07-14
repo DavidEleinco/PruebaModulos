@@ -1,1 +1,1 @@
-include ':textToSpeech', ':logingoogle'
+include ':textToSpeech', ':logingoogle', ':webservices'
