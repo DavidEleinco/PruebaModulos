@@ -9,13 +9,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends Activity {
 
@@ -70,6 +75,27 @@ public class MainActivity extends Activity {
                     }
                 }
         );
+        request = new StringRequest(Request.Method.POST,urlTexto,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        tv.setText(response);
+                    }
+                }, new Response.ErrorListener(){
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getApplication(), "Error: No se pudo descargar el texto", Toast.LENGTH_SHORT).show();
+                        }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("nombre", "david");
+                params.put("password", "pass");
+                params.put("email", "ludagoga@hola.com");
+                return super.getParams();
+            }
+        };
         request.setRetryPolicy( new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 3, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(request);
     }
