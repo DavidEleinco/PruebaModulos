@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void suenelo(View view){
-        ttobj.speak("Did you speak well?", TextToSpeech.QUEUE_FLUSH, null);
-        //ttobj.speak(paDecir.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+        ttobj.speak(paDecir.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
     }
 }

@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
             EditText email = (EditText) findViewById(R.id.et_email);
             email.setText(acct.getEmail().toString());
-
         }
     }
 }
