@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        casa {
+            keyAlias 'facebook'
+            keyPassword 'ludagoga94'
+            storeFile file('/root/.android/clavesDavidGoyes.jks')
+            storePassword 'ludagoga94'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
-
     defaultConfig {
         applicationId "com.a4l.loginfacebook"
         minSdkVersion 15
@@ -15,6 +22,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.casa
+        }
+        debug {
+            signingConfig signingConfigs.casa
         }
     }
 }
