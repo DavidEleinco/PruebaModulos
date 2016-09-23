@@ -9,6 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/loginfacebook" />
             <option value="$PROJECT_DIR$/logingoogle" />
             <option value="$PROJECT_DIR$/textToSpeech" />
             <option value="$PROJECT_DIR$/webservices" />
@@ -17,6 +18,7 @@
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/loginfacebook" />
             <option value="$PROJECT_DIR$/logingoogle" />
             <option value="$PROJECT_DIR$/textToSpeech" />
             <option value="$PROJECT_DIR$/webservices" />

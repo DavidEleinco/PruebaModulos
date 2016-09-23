@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">LoginFacebook</string>
+    <string name="correo">E-mail:</string>
+    <string name="username">Nombre de Usuario:</string>
+
+    <string name="facebook_app_id">1865786686985881</string>
+</resources>
