@@ -3,10 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PruebaModulos.iml" filepath="$PROJECT_DIR$/PruebaModulos.iml" />
-      <module fileurl="file://$PROJECT_DIR$/textToSpeech/app.iml" filepath="$PROJECT_DIR$/textToSpeech/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/logingoogle/loggingoogle.iml" filepath="$PROJECT_DIR$/logingoogle/loggingoogle.iml" />
       <module fileurl="file://$PROJECT_DIR$/loginfacebook/loginfacebook.iml" filepath="$PROJECT_DIR$/loginfacebook/loginfacebook.iml" />
       <module fileurl="file://$PROJECT_DIR$/logingoogle/logingoogle.iml" filepath="$PROJECT_DIR$/logingoogle/logingoogle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sockets_cliente/sockets_cliente.iml" filepath="$PROJECT_DIR$/sockets_cliente/sockets_cliente.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sockets_servidor/sockets_servidor.iml" filepath="$PROJECT_DIR$/sockets_servidor/sockets_servidor.iml" />
       <module fileurl="file://$PROJECT_DIR$/textToSpeech/textToSpeech.iml" filepath="$PROJECT_DIR$/textToSpeech/textToSpeech.iml" />
       <module fileurl="file://$PROJECT_DIR$/webservices/webservices.iml" filepath="$PROJECT_DIR$/webservices/webservices.iml" />
     </modules>
