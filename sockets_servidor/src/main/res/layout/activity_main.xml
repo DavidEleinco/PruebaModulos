@@ -11,9 +11,15 @@
     tools:context="co.com.eleinco.sockets_servidor.MainActivity">
 
     <TextView
-        android:id="@+id/main_tv"
+        android:id="@+id/main_IP_PORT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="IP: X - PORT: Y" />
+
+    <TextView
+        android:id="@+id/main_serverCommunication"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Server communication" />
 
 </LinearLayout>
