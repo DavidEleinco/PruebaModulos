@@ -12,17 +12,58 @@
 
     tools:context="co.com.eleinco.sockets_cliente.MainActivity">
 
-    <EditText
-        android:id="@+id/main_et_loquevoyadecir"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:hint="Escriba aqui"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/main_bt_enviar"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Send" />
+        android:gravity="center_vertical"
+        android:layout_marginBottom="5dp">
+
+        <EditText
+            android:id="@+id/main_et_IPserver"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:hint="IP server"/>
+
+        <Button
+            android:id="@+id/main_bt_conectar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Conectar"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/main_tv_chat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/main_et_loquevoyadecir"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Escriba aqui"
+            android:layout_marginRight="5dp"/>
+
+        <Button
+            android:id="@+id/main_bt_enviar"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:text="Send"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>
