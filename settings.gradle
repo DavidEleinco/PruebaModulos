@@ -1,1 +1,1 @@
-include ':textToSpeech', ':logingoogle', ':webservices', ':loginfacebook', ':sockets_cliente', ':sockets_servidor'
+include ':textToSpeech', ':logingoogle', ':webservices', ':loginfacebook', ':sockets_cliente', ':sockets_servidor', ':signature'
