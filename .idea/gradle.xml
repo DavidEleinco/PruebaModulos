@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/sockets_cliente" />
             <option value="$PROJECT_DIR$/sockets_servidor" />
             <option value="$PROJECT_DIR$/textToSpeech" />
+            <option value="$PROJECT_DIR$/upload2dropbox" />
             <option value="$PROJECT_DIR$/webservices" />
           </set>
         </option>
@@ -27,6 +28,7 @@
             <option value="$PROJECT_DIR$/sockets_cliente" />
             <option value="$PROJECT_DIR$/sockets_servidor" />
             <option value="$PROJECT_DIR$/textToSpeech" />
+            <option value="$PROJECT_DIR$/upload2dropbox" />
             <option value="$PROJECT_DIR$/webservices" />
           </set>
         </option>
