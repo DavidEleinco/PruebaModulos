@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(contextoMain, "Iniciando descarga", Toast.LENGTH_SHORT).show();
                     pb.setVisibility(View.VISIBLE);
+                    b_descargar.setEnabled(false);
                     new DescargarReporteDropbox().execute();
                 }
             }
@@ -155,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             pb.setVisibility(View.GONE);
+            b_descargar.setEnabled(true);
             if (s == null) {
                 for (int i = 0; i < archivos.size(); i++) {
                     Toast.makeText(contextoMain, archivos.get(i), Toast.LENGTH_SHORT).show();
