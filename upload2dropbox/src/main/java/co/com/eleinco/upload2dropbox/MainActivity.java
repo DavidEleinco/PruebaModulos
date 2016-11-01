@@ -4,6 +4,7 @@ import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.UploadBuilder;
 import com.dropbox.core.v2.users.FullAccount;
 
 import android.content.Context;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -98,8 +100,11 @@ public class MainActivity extends AppCompatActivity {
     private void enviarReporte(){
 
         String fecha = getFechaActual();
-        String numeroReporte = "0";
-        String nombreArchivo = et_cedula.getText()+"_r"+numeroReporte+".txt";
+        String hora = getHoraActual();
+        String numeroReporte = "0"; // TODO traerse el numero de reporte con sharedPreference
+        String cedula = et_cedula.getText().toString();
+        String nombreArchivo = "r"+numeroReporte+".txt";
+
         String dataReporte = et_reporte.getText().toString();
 
         File file = new File(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES );
@@ -111,8 +116,9 @@ public class MainActivity extends AppCompatActivity {
             file = new File(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES, nombreArchivo);
             FileOutputStream stream = new FileOutputStream(file);
             try {
-                stream.write(fecha.getBytes());
-                stream.write(dataReporte.getBytes());
+                stream.write((fecha + " " + hora +"\n").getBytes());
+                stream.write((cedula +"\n").getBytes());
+                stream.write((dataReporte+"\n").getBytes());
                 stream.close();
             } finally {
                 stream.close();
@@ -122,30 +128,38 @@ public class MainActivity extends AppCompatActivity {
             Log.e("Exception", "File write failed: " + e.toString());
         }
 
-        new EnviarArchivoADropbox(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES + "/" + nombreArchivo).execute();
+        new EnviarArchivoADropbox(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES + "/" + nombreArchivo, "/" + cedula + "/" + nombreArchivo).execute();
 
+        //Foto
+        //new EnviarArchivoADropbox(Environment.getExternalStorageDirectory() + "/WhatsApp/Media/WhatsApp Images/fotoPrueba.jpg", "/fotoPrueba.jpg").execute();
+
+        //Video
+        //new EnviarArchivoADropbox(Environment.getExternalStorageDirectory() + "/WhatsApp/Media/WhatsApp Video/videoPrueba.mp4", "/videoPrueba.mp4").execute();
     }
 
     private class EnviarArchivoADropbox extends AsyncTask<Void, Void, String> {
 
-        private String nombreArchivo;
+        private String nombreArchivoLocal;
+        private String nombreArchivoDropbox;
 
-        public EnviarArchivoADropbox(String nombreArchivo) {
-            this.nombreArchivo = nombreArchivo;
+
+        public EnviarArchivoADropbox(String nombreArchivoLocal, String nombreArchivoDropbox) {
+            this.nombreArchivoLocal = nombreArchivoLocal;
+            this.nombreArchivoDropbox = nombreArchivoDropbox;
         }
 
         @Override
         protected String doInBackground(Void... params) {
             InputStream in = null;
             try {
-                in = new FileInputStream(nombreArchivo);
+                in = new FileInputStream(nombreArchivoLocal);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 return "fail";
             }
 
             try {
-                FileMetadata metadata = client.files().uploadBuilder(nombreArchivo).uploadAndFinish(in);
+                client.files().uploadBuilder(nombreArchivoDropbox).withAutorename(true).uploadAndFinish(in);
             } catch (DbxException e) {
                 e.printStackTrace();
                 return "fail";
@@ -179,11 +193,19 @@ public class MainActivity extends AppCompatActivity {
         int actualYear = cal.get(Calendar.YEAR);
         int actualMonth = cal.get(Calendar.MONTH)+1;
         int actualDay = cal.get(Calendar.DAY_OF_MONTH);
+
+        String fechaFormatoCR = date2string(actualDay, actualMonth, actualYear);
+
+        return fechaFormatoCR;
+    }
+
+    private String getHoraActual(){
+        Calendar cal = Calendar.getInstance();
         int actualHour = cal.get(Calendar.HOUR_OF_DAY);
         int actualMinute = cal.get(Calendar.MINUTE);
         int actualSeconds = cal.get(Calendar.SECOND);
 
-        String fechaFormatoCR = date2string(actualDay, actualMonth, actualYear) + " " + time2string(actualHour, actualMinute, actualSeconds);
+        String fechaFormatoCR = time2string(actualHour, actualMinute, actualSeconds);
 
         return fechaFormatoCR;
     }
