@@ -110,10 +110,11 @@ public class MainActivity extends AppCompatActivity {
             OutputStream out = null;
             String dataDescargada;
 
-
+            String nombreArchivo;
             for (Metadata m : metadata) {
+                nombreArchivo = m.getName();
                 try {
-                    out = new FileOutputStream(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES + "/reportesDescargados.txt");
+                    out = new FileOutputStream(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES + "/" + nombreArchivo);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     return "Falla creando archivo";
@@ -130,10 +131,15 @@ public class MainActivity extends AppCompatActivity {
                     return "fail";
                 }
 
-                dataDescargada = cargarArchivoEnString(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES + "/reportesDescargados.txt");
+                if (nombreArchivo.contains("asignacion_")) {
+                    dataDescargada = cargarArchivoEnString(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES + "/" + nombreArchivo);
 
-                if (dataDescargada.contains("$123$")) {
-                    archivos.add(m.getPathLower() + " " + dataDescargada);
+                    if (dataDescargada.contains("$123$")) {
+                        archivos.add(m.getPathLower() + " " + dataDescargada);
+                    } else {
+                        File file = new File(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES + "/" + nombreArchivo);
+                        boolean deleted = file.delete();
+                    }
                 }
             }
 
@@ -146,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < archivos.size(); i++) {
                     Toast.makeText(contextoMain, archivos.get(i), Toast.LENGTH_SHORT).show();
                 }
+                Toast.makeText(contextoMain, "Descarga completa", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(contextoMain, "Dropbox: Error de conexión. " + s, Toast.LENGTH_SHORT).show();
             }
