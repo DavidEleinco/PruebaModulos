@@ -55,5 +55,16 @@
                 android:id="@+id/main_bt_descargar" />
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/main_cargando"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
     </LinearLayout>
 </ScrollView>

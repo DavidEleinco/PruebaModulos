@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText et_cedula;
     private EditText et_reporte;
 
+    private ProgressBar pb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         contextoMain = this;
 
         tv = (TextView) findViewById(R.id.tv_QuienSoy);
+        pb = (ProgressBar) findViewById(R.id.main_cargando);
 
         et_cedula = (EditText) findViewById(R.id.main_et_cedula);
         et_reporte = (EditText) findViewById(R.id.main_et_reporte);
@@ -79,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(contextoMain, "Dropbox: Error de conexión.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(contextoMain, "Iniciando descarga", Toast.LENGTH_SHORT).show();
+                    pb.setVisibility(View.VISIBLE);
                     new DescargarReporteDropbox().execute();
                 }
             }
@@ -149,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
+            pb.setVisibility(View.GONE);
             if (s == null) {
                 for (int i = 0; i < archivos.size(); i++) {
                     Toast.makeText(contextoMain, archivos.get(i), Toast.LENGTH_SHORT).show();
