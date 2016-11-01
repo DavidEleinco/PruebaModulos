@@ -38,11 +38,22 @@
             android:layout_height="wrap_content"
             android:hint="Reporte"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enviar"
-            android:id="@+id/main_bt_enviar"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enviar"
+                android:id="@+id/main_bt_enviar" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Descargar"
+                android:id="@+id/main_bt_descargar" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

@@ -3,6 +3,8 @@ package co.com.eleinco.upload2dropbox;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.ListFolderResult;
+import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
 
 import android.content.Context;
@@ -17,13 +19,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv;
     private Context contextoMain;
     private Button b_enviar;
+    private Button b_descargar;
     private EditText et_cedula;
     private EditText et_reporte;
 
@@ -63,6 +70,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        b_descargar = (Button) findViewById(R.id.main_bt_descargar);
+        b_descargar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (account == null) {
+                    Toast.makeText(contextoMain, "Dropbox: Error de conexión.", Toast.LENGTH_SHORT).show();
+                } else {
+                    new DescargarReporteDropbox().execute();
+                }
+            }
+        });
+
         config = new DbxRequestConfig("Reporte_eventos_Eleinco");
         client = new DbxClientV2(config, ACCESS_TOKEN);
 
@@ -71,27 +90,85 @@ public class MainActivity extends AppCompatActivity {
         new AutenticacionDropbox().execute();
     }
 
+    private class DescargarReporteDropbox extends AsyncTask<Void, Void, String> {
+        List<Metadata> metadata;
+        List<String> archivos;
 
-    private class AutenticacionDropbox extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
+            ListFolderResult result = null;
             try {
-                account = client.users().getCurrentAccount();
+                result = client.files().listFolder("/asignaciones");
             } catch (DbxException e) {
                 e.printStackTrace();
+                return "fail";
             }
+
+            metadata = result.getEntries();
+
+            OutputStream out = null;
+            String dataDescargada;
+            try {
+                out = new FileOutputStream(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES + "/reportesDescargados.txt");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return "Falla creando archivo";
+            }
+
+            for (Metadata m : metadata) {
+                try {
+                    client.files().downloadBuilder(m.getPathLower()).download(out);
+                } catch (DbxException e) {
+                    e.printStackTrace();
+                    return "fail";
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return "fail";
+                }
+
+                dataDescargada = cargarArchivoEnString(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES + "/reportesDescargados.txt");
+
+                if (dataDescargada.contains("$123$")) {
+                    archivos.add(m.getPathLower() + " " + dataDescargada);
+                }
+            }
+
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            if( account != null ){
-                tv.setText(account.getName().getDisplayName());
+            if (s == null) {
+                for (int i = 0; i < archivos.size(); i++) {
+                    Toast.makeText(contextoMain, archivos.get(i), Toast.LENGTH_SHORT).show();
+                }
             }else{
-                Toast.makeText(contextoMain, "Dropbox: Error de conexión.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(contextoMain, "Dropbox: Error de conexión. " + s, Toast.LENGTH_SHORT).show();
             }
         }
     }
+
+
+    private String cargarArchivoEnString(String path) {
+        File file = new File(path);
+        StringBuilder text = new StringBuilder();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return text.toString();
+    }
+
 
     private void enviarReporte(){
 
@@ -176,7 +253,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class AutenticacionDropbox extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                account = client.users().getCurrentAccount();
+            } catch (DbxException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
 
+        @Override
+        protected void onPostExecute(String s) {
+            if (account != null) {
+                tv.setText(account.getName().getDisplayName());
+            } else {
+                Toast.makeText(contextoMain, "Dropbox: Error de conexión.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
 
 
