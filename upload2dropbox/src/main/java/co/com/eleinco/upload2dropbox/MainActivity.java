@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 if (account == null) {
                     Toast.makeText(contextoMain, "Dropbox: Error de conexión.", Toast.LENGTH_SHORT).show();
                 } else {
+                    Toast.makeText(contextoMain, "Iniciando descarga", Toast.LENGTH_SHORT).show();
                     new DescargarReporteDropbox().execute();
                 }
             }
