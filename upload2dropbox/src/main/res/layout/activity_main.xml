@@ -27,14 +27,15 @@
         <EditText
             android:id="@+id/main_et_cedula"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:inputType="number"
             android:hint="Su cedula"/>
 
         <EditText
             android:id="@+id/main_et_reporte"
+            android:gravity="top|left"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:hint="Reporte"/>
 
         <Button
