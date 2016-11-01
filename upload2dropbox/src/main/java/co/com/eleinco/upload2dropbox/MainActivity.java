@@ -28,6 +28,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class DescargarReporteDropbox extends AsyncTask<Void, Void, String> {
         List<Metadata> metadata;
-        List<String> archivos;
+        List<String> archivos = new ArrayList<>();
 
         @Override
         protected String doInBackground(Void... params) {
@@ -108,16 +109,19 @@ public class MainActivity extends AppCompatActivity {
 
             OutputStream out = null;
             String dataDescargada;
-            try {
-                out = new FileOutputStream(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES + "/reportesDescargados.txt");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return "Falla creando archivo";
-            }
+
 
             for (Metadata m : metadata) {
                 try {
+                    out = new FileOutputStream(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES + "/reportesDescargados.txt");
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    return "Falla creando archivo";
+                }
+
+                try {
                     client.files().downloadBuilder(m.getPathLower()).download(out);
+                    out.close();
                 } catch (DbxException e) {
                     e.printStackTrace();
                     return "fail";
