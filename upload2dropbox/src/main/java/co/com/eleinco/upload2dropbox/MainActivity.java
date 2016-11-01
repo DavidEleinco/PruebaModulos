@@ -21,6 +21,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -97,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
     private void enviarReporte(){
 
         String fecha = getFechaActual();
-        String nombreArchivo = "re_"+et_cedula.getText()+"_"+fecha+".txt";
+        String numeroReporte = "0";
+        String nombreArchivo = et_cedula.getText()+"_r"+numeroReporte+".txt";
         String dataReporte = et_reporte.getText().toString();
 
         File file = new File(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES );
@@ -106,14 +108,21 @@ public class MainActivity extends AppCompatActivity {
             isDirectoryCreated = file.mkdirs();
 
         try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(contextoMain.openFileOutput(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES + "/" + nombreArchivo, Context.MODE_PRIVATE));
-            outputStreamWriter.write(dataReporte);
-            outputStreamWriter.close();
+            file = new File(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES, nombreArchivo);
+            FileOutputStream stream = new FileOutputStream(file);
+            try {
+                stream.write(fecha.getBytes());
+                stream.write(dataReporte.getBytes());
+                stream.close();
+            } finally {
+                stream.close();
+            }
         }catch (IOException e) {
+            Toast.makeText(contextoMain, "Falla en la creacion del reporte.", Toast.LENGTH_SHORT).show();
             Log.e("Exception", "File write failed: " + e.toString());
         }
 
-        new EnviarArchivoADropbox(nombreArchivo).execute();
+        new EnviarArchivoADropbox(Environment.getExternalStorageDirectory() + "/" + DIRECTORIO_REPORTES + "/" + nombreArchivo).execute();
 
     }
 
@@ -174,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         int actualMinute = cal.get(Calendar.MINUTE);
         int actualSeconds = cal.get(Calendar.SECOND);
 
-        String fechaFormatoCR = date2string(actualDay, actualMonth, actualYear) + "_" + time2string(actualHour, actualMinute, actualSeconds);
+        String fechaFormatoCR = date2string(actualDay, actualMonth, actualYear) + " " + time2string(actualHour, actualMinute, actualSeconds);
 
         return fechaFormatoCR;
     }
@@ -199,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             shour = Integer.toString(hour);
         }
-        sTime = shour + sminute + sseconds;
+        sTime = shour + ":" + sminute + ":" + sseconds;
         return sTime;
     }
 
@@ -221,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
             smonth = Integer.toString(month);
         }
         syear = Integer.toString(year);
-        sDate = syear + smonth + sday;
+        sDate = syear + "/" + smonth + "/" + sday;
         return sDate;
     }
 }
