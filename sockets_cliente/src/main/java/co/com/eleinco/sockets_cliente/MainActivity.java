@@ -8,13 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,10 +80,17 @@ public class MainActivity extends AppCompatActivity {
     public class ClientThread implements Runnable {
 
         public void run() {
+            InetAddress serverAddr = null;
             try {
-                InetAddress serverAddr = InetAddress.getByName(SERVERIP);
-                Log.d("ClientActivity", "C: Connecting...");
-                Socket socket = new Socket(serverAddr, SERVERPORT);
+                serverAddr = InetAddress.getByName(SERVERIP);
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+            Log.d("ClientActivity", "C: Connecting...");
+            Socket socket = new Socket();
+            try {
+                socket.connect(new InetSocketAddress(serverAddr, SERVERPORT), 10000 /*timeout*/);
+
                 connected = true;
                 while (connected) {
                     try {
@@ -97,8 +108,17 @@ public class MainActivity extends AppCompatActivity {
                 socket.close();
                 connected = false;
                 Log.d("ClientActivity", "C: Closed.");
+            } catch (SocketTimeoutException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Imposible conectar", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                connected = false;
             } catch (Exception e) {
                 Log.e("ClientActivity", "C: Error", e);
+                e.printStackTrace();
                 connected = false;
             }
         }

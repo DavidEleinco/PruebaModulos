@@ -25,7 +25,9 @@ import java.util.Map;
 public class MainActivity extends Activity {
 
     String urlImagen = "https://dl.dropboxusercontent.com/u/39626335/captain_america_civil_war_6-wallpaper-640x960.jpg";
-    String urlTexto = "https://dl.dropboxusercontent.com/u/39626335/pruebaWebServices.txt";
+    //String urlTexto = "https://dl.dropboxusercontent.com/u/39626335/pruebaWebServices.txt";
+    String urlTexto = "https://dl.dropboxusercontent.com/u/39626335/pruebaEleinco_mapas.txt";
+    //String urlTexto = "https://www.dropbox.com/s/livuxsw8wmk6tsr/pruebaEleinco_mapas.txt?dl=0";
 
     RequestQueue requestQueue;
     StringRequest request;
